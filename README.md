@@ -28,7 +28,11 @@ WHERE _table_suffix BETWEEN '0101' AND '0331'
 GROUP BY month
 ORDER BY month;
 ```
-![image](https://github.com/user-attachments/assets/4479030a-1b3d-45a2-a9ec-91b9095e8268)
+
+| Row | month  | avg_pageviews_purchase | avg_pageviews_non_purchase |
+|-----|--------|------------------------|----------------------------|
+| 1   | 201706 | 94.02050113895217       | 316.86558846341671          |
+| 2   | 201707 | 124.23755186721992      | 334.05655979568053          |
 
 Q1 2017 shows consistent website traffic, with March experiencing a notable spike in transactions (993), indicating improved conversion rates or seasonal effects.
 
@@ -43,7 +47,19 @@ FROM `bigquery-public-data.google_analytics_sample.ga_sessions_201707*`
 GROUP BY source
 ORDER BY total_visits DESC;
 ```
-![image](https://github.com/user-attachments/assets/abe64d53-90c9-4d60-a53e-688b1bbe86b0)
+
+| Row | source                | total_visits | total_no_of_bounces | bounce_rate |
+|-----|-----------------------|--------------|---------------------|-------------|
+| 1   | google                | 38400        | 19798               | 51.557      |
+| 2   | (direct)              | 19891        | 8606                | 43.266      |
+| 3   | youtube.com           | 6351         | 4238                | 66.730      |
+| 4   | analytics.google.com  | 1972         | 1064                | 53.955      |
+| 5   | Partners              | 1788         | 936                 | 52.349      |
+| 6   | m.facebook.com        | 669          | 430                 | 64.275      |
+| 7   | google.com            | 368          | 183                 | 49.728      |
+| 8   | dfa                   | 302          | 124                 | 41.060      |
+| 9   | sites.google.com      | 230          | 97                  | 42.174      |
+| 10  | facebook.com          | 191          | 102                 | 53.403      |
 
 Google drives the most traffic but has a high bounce rate. YouTube and Facebook have the highest bounce rates, while direct traffic shows better engagement.
 ### Query 3: Revenue by traffic source by week, by month in June 2017
@@ -84,7 +100,20 @@ GROUP BY
 
 ORDER BY CAST(revenue AS FLOAT64) DESC;
 ```
-![image](https://github.com/user-attachments/assets/3c6b2d82-c3f1-4fe0-a47d-e24a2fb43cc9)
+
+| Row | time_type | time   | source   | revenue    |
+|-----|-----------|--------|----------|------------|
+| 1   | Month     | 201706 | (direct) | 97333.6197 |
+| 2   | Week      | 201724 | (direct) | 30908.9099 |
+| 3   | Week      | 201725 | (direct) | 27295.3199 |
+| 4   | Month     | 201706 | google   | 18757.1799 |
+| 5   | Week      | 201723 | (direct) | 17325.6799 |
+| 6   | Week      | 201726 | (direct) | 14914.8100 |
+| 7   | Week      | 201724 | google   | 9217.1700  |
+| 8   | Month     | 201706 | dfa      | 8862.2300  |
+| 9   | Week      | 201722 | (direct) | 6888.9000  |
+| 10  | Week      | 201726 | google   | 5330.5700  |
+
 
 Direct traffic consistently generates the highest revenue across weeks and months. Google is the second-largest source. June shows strong overall performance, especially for direct traffic.
 ### Query 4: Average number of pageviews by purchaser type (purchasers vs non-purchasers) in June, July 2017
@@ -118,7 +147,11 @@ FULL JOIN nonpurchase
 USING (month)
 ORDER BY purchase.month;
 ```
-![image](https://github.com/user-attachments/assets/b6a4e04d-3ba0-49a7-b465-371591c31380)
+
+| Row | month  | avg_pageviews_purchase  | avg_pageviews_non_purchase  |
+|-----|--------|-------------------------|-----------------------------|
+| 1   | 201706 | 94.02050113895217        | 316.86558846341671           |
+| 2   | 201707 | 124.23755186721992       | 334.05655979568053           |
 
 Non-purchasers exhibit significantly higher average pageviews compared to purchasers. Both groups increased pageviews from June to July, with purchasers showing a larger relative increase.
 ### Query 5: Average number of transactions per user that made a purchase in July 2017
@@ -133,7 +166,11 @@ WHERE totals.transactions >=1
 GROUP BY Month
 ORDER BY Month;
 ```
-![image](https://github.com/user-attachments/assets/67fa0047-b26b-4eed-972d-166bb15cdfc9)
+
+| Month  | Avg_total_transactions_per_user |
+|--------|---------------------------------|
+| 201707 | 4.16390041493776                |
+
 
 In July 2017, users who made purchases completed an average of 4.16 transactions. This suggests moderate repeat buying behavior among customers within the month.
 ### Query 6: Average amount of money spent per session. Only include purchaser data in July 2017
@@ -148,7 +185,11 @@ WHERE totals.transactions IS NOT NULL
 GROUP BY Month
 ORDER BY Month;
 ```
-![image](https://github.com/user-attachments/assets/7d7cf97b-0735-495a-9f12-57b195b3e594)
+
+| Month  | avg_revenue_by_user_per_visit |
+|--------|-------------------------------|
+| 201707 | 43.86                         |
+
 
 In July 2017, purchasing users spent an average of $43.86 per session.
 This metric indicates the typical transaction value, useful for understanding customer spending patterns and optimizing pricing strategies.
@@ -170,7 +211,19 @@ WHERE product.productRevenue IS NOT NULL
 GROUP BY product.v2ProductName 
 ORDER BY quantity DESC;
 ```
-![image](https://github.com/user-attachments/assets/7175c609-2ada-4682-a200-e6703399579f)
+
+| Row | other_purchased_products                | quantity |
+|-----|-----------------------------------------|----------|
+| 1   | Google Sunglasses                       | 20       |
+| 2   | Google Women's Vintage Hero ...         | 7        |
+| 3   | SPF-15 Slim & Slender Lip Balm          | 6        |
+| 4   | Google Women's Short Sleeve ...         | 4        |
+| 5   | YouTube Men's Fleece Hoodie ...         | 3        |
+| 6   | Google Men's Short Sleeve Bad...        | 3        |
+| 7   | Android Men's Vintage Henley            | 2        |
+| 8   | 22 oz YouTube Bottle Infuser            | 2        |
+| 9   | Google Men's Short Sleeve Her...        | 2        |
+| 10  | Android Women's Fleece Hoodie           | 2        |
 
 Customers who bought the YouTube Men's Vintage Henley also favored Google-branded items, especially Sunglasses. There's a strong preference for casual wear and accessories across Google, YouTube, and Android product lines.
 ### Query 8: Calculate cohort map from product view to addtocart to purchase in Jan, Feb and March 2017
@@ -220,7 +273,13 @@ LEFT JOIN  purchasenum
 USING(month)
 ORDER BY month;
 ```
-![image](https://github.com/user-attachments/assets/52eecd05-98c1-45a0-bd1b-d574a9e3c7c5)
+
+| Row | month  | num_product_view | num_addtocart | num_purchase | add_to_cart_rate | purchase_rate |
+|-----|--------|------------------|---------------|--------------|------------------|---------------|
+| 1   | 201701 | 25787            | 7342          | 2143         | 28.47            | 8.31          |
+| 2   | 201702 | 21489            | 7360          | 2060         | 34.25            | 9.59          |
+| 3   | 201703 | 23549            | 8782          | 2977         | 37.29            | 12.64         |
+
 
 Product view to purchase conversion rates improved consistently from January to March 2017. March saw the highest engagement, with 37.29% add-to-cart rate and 12.64% purchase rate. This trend indicates increasing effectiveness in converting browsers to buyers, possibly due to improved marketing or user experience.
 ## V. Conclusion
