@@ -29,10 +29,11 @@ GROUP BY month
 ORDER BY month;
 ```
 
-| Row | month  | avg_pageviews_purchase | avg_pageviews_non_purchase |
-|-----|--------|------------------------|----------------------------|
-| 1   | 201706 | 94.02050113895217       | 316.86558846341671          |
-| 2   | 201707 | 124.23755186721992      | 334.05655979568053          |
+| month  | visits | pageviews | transactions |
+|--------|--------|-----------|--------------|
+| 201701 | 64694  | 257708    | 713          |
+| 201702 | 62192  | 233373    | 733          |
+| 201703 | 69931  | 259522    | 993          |
 
 Q1 2017 shows consistent website traffic, with March experiencing a notable spike in transactions (993), indicating improved conversion rates or seasonal effects.
 
